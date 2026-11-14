@@ -1,0 +1,3 @@
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Src/foc_sensing.c:6:6:FOC_Sensor_Init	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Src/foc_sensing.c:27:6:FOC_Sensor_ClearFaults	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Src/foc_sensing.c:40:6:FOC_Sensor_Update_100kHz	40	static

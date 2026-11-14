@@ -1,0 +1,3 @@
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/cordic.c:30:6:MX_CORDIC_Init	8	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/cordic.c:51:6:HAL_CORDIC_MspInit	24	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/cordic.c:67:6:HAL_CORDIC_MspDeInit	16	static

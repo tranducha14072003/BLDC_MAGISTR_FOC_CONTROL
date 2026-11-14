@@ -1,0 +1,4 @@
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/tim.c:30:6:MX_TIM1_Init	120	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/tim.c:115:6:HAL_TIM_Base_MspInit	24	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/tim.c:130:6:HAL_TIM_MspPostInit	48	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/tim.c:178:6:HAL_TIM_Base_MspDeInit	16	static
