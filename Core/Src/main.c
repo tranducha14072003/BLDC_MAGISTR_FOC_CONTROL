@@ -27,7 +27,7 @@
 /* Private includes ----------------------------------------------------------*/
 /* USER CODE BEGIN Includes */
 #include "foc_config.h"
-#include 'foc_math.h'
+#include "FOC_math.h"
 #include "foc_sensing.h"
 #include "foc_pid.h" 
 /* USER CODE END Includes */
@@ -123,7 +123,7 @@ int main(void)
   FOC_Sensor_Init(&g_sensor);
   // 3. Khởi tạo 2 bộ điều khiển PI dòng điện Id và Iq ở Ts = 10 us (Mốc 3)
   // Thiết kế theo băng thông 1500 Hz (w_cc = 9424.8 rad/s): Kp = Ls*w_cc ~ 2.07, Ki = Rs*w_cc ~ 18.0
-  float v_max_init = VBUS_INITIAL_DEFAULT * SVPWM_LIMIT_COEFF; // ~13.3V ở nguồn 24V
+  float v_max_init = VBUS_NOMINAL_VOLT  * SVPWM_LIMIT_COEFF; // ~13.3V ở nguồn 24V
   FOC_PI_Init(&g_pi_id, 2.07f, 300.0f, FOC_TS, -v_max_init, v_max_init);
   FOC_PI_Init(&g_pi_iq, 2.07f, 300.0f, FOC_TS, -v_max_init, v_max_init);
   // 4. Đặt sẵn giá trị thanh ghi PWM ở mức trung tính 50% (425) trước khi bật cầu GaN
@@ -220,10 +220,10 @@ void FOC_Run_100kHz_ISR(uint16_t raw_ia, uint16_t raw_ib, uint16_t raw_vbus)
         g_we_open += 200.0f * FOC_TS; // Tăng tốc mất 1 giây
     }
     g_theta_e += g_we_open * FOC_TS;
-    norm_angle_rad((float *)&g_theta_e);
+    normalize_angle((float *)&g_theta_e);
 
     float sin_t, cos_t;
-    pre_calc_sin_cos(g_theta_e, &sin_t, &cos_t);
+    fast_sincos(g_theta_e, &sin_t, &cos_t);
 
 #if (FOC_BUILD_LEVEL >= 2)
     // Từ Build 2 trở đi: Thực hiện biến đổi Clarke và Park trên dòng điện thực tế
@@ -258,7 +258,7 @@ void FOC_Run_100kHz_ISR(uint16_t raw_ia, uint16_t raw_ib, uint16_t raw_vbus)
     float v_alpha, v_beta;
     uint32_t u, v, w;
     inverse_park_transform(vd_out, vq_out, sin_t, cos_t, &v_alpha, &v_beta);
-    svpwm(v_alpha, v_beta, g_sensor.vbus, PWM_PERIOD_CYCLES, &u, &v, &w);
+    svpwm(v_alpha, v_beta, g_sensor.vbus,1/g_sensor.vbus  , PWM_PERIOD_CYCLES, &u, &v, &w);
     // Ghi trực tiếp vào thanh ghi phần cứng của Timer 1
     TIM1->CCR1 = u;
     TIM1->CCR2 = v;

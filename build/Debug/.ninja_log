@@ -1,5 +1,5 @@
 # ninja log v7
-5	113	8162714922425029	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_sensing.c.obj	198b7a9e212bed
+120	639	8164010939417684	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_sensing.c.obj	198b7a9e212bed
 57	208	8156231886134250	CMakeFiles/Configation_Pinout.dir/startup_stm32g474xx.s.obj	fdd012d121263ea2
 44	316	8156231885966392	CMakeFiles/Configation_Pinout.dir/Core/Src/sysmem.c.obj	9bcda93b6a4af6eb
 200	400	8156231887563585	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_ll_adc.c.obj	3f791884c2f461d1
@@ -32,9 +32,25 @@
 83	881	8157948190416618	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c.obj	2bc469df878490e1
 578	1094	8157948195366811	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj	1ae8708631ac5ff5
 114	335	8162714923507305	Configation_Pinout.elf	d183d4943364a4f5
-5	152	8163914187807492	build.ninja	edd906d2bd9b885e
-5	152	8163914187649813	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake_install.cmake	edd906d2bd9b885e
-5	152	8163914187727362	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake/stm32cubemx/cmake_install.cmake	edd906d2bd9b885e
+5	152	8164013095717937	build.ninja	edd906d2bd9b885e
+5	152	8164013095593147	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake_install.cmake	edd906d2bd9b885e
+5	152	8164013095648381	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake/stm32cubemx/cmake_install.cmake	edd906d2bd9b885e
 153	1280	8157941692817906	CMakeFiles/Configation_Pinout.dir/Core/Src/cordic.c.obj	59ad82701373f84a
 172	890	8162329869198233	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_math.c.obj	608ece54664d42b5
 76	733	8157948190356458	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cordic.c.obj	be02efb3a70ca3d9
+63	254	8164013101839411	CMakeFiles/Configation_Pinout.dir/startup_stm32g474xx.s.obj	fb58109240b5b8e9
+50	378	8164013101704197	CMakeFiles/Configation_Pinout.dir/Core/Src/sysmem.c.obj	e01928c83b87c97f
+72	380	8164013101924486	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_sensing.c.obj	5abcbc0be704133d
+85	430	8164013102064738	CMakeFiles/Configation_Pinout.dir/PID/Src/foc_pid.c.obj	6ba99a779f31b0eb
+56	488	8164013101774221	CMakeFiles/Configation_Pinout.dir/Core/Src/syscalls.c.obj	64cda21a54221c19
+10	578	8164013101309238	CMakeFiles/Configation_Pinout.dir/Core/Src/gpio.c.obj	ad9538a46e9bb6ab
+16	605	8164013101371516	CMakeFiles/Configation_Pinout.dir/Core/Src/adc.c.obj	d61caa17ec592e8f
+31	606	8164013101518634	CMakeFiles/Configation_Pinout.dir/Core/Src/usart.c.obj	20b7872f3dac38e5
+21	616	8164013101420850	CMakeFiles/Configation_Pinout.dir/Core/Src/cordic.c.obj	965332ad6ecc1e92
+43	627	8164013101644627	CMakeFiles/Configation_Pinout.dir/Core/Src/stm32g4xx_hal_msp.c.obj	2017a0693685a62a
+26	629	8164013101463952	CMakeFiles/Configation_Pinout.dir/Core/Src/tim.c.obj	3cf79bfd8b292848
+37	638	8164013101579001	CMakeFiles/Configation_Pinout.dir/Core/Src/stm32g4xx_it.c.obj	ed1dd624326e4bca
+79	709	8164013101999675	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_math.c.obj	5e47add9e9fc5b67
+11	133	8164023994029738	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_sensing.c.obj	5abcbc0be704133d
+4	300	8164028970119851	CMakeFiles/Configation_Pinout.dir/Core/Src/main.c.obj	d5c2e44e90aa25c4
+300	909	8164028973099543	Configation_Pinout.elf	4f538f6985e9aeb0

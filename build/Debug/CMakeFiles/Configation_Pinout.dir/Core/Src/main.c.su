@@ -1,3 +1,7 @@
-C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:68:5:main	8	static
-C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:117:6:SystemClock_Config	88	static
-C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:166:6:Error_Handler	4	static,ignoring_inline_asm
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Inc/foc_sensing.h:60:20:FOC_Sensor_HasFault	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Inc/foc_pid.h:39:21:FOC_PI_UpdateFF	48	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Inc/foc_pid.h:69:21:FOC_PI_Update	24	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:89:5:main	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:150:6:SystemClock_Config	88	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:192:6:FOC_Run_100kHz_ISR	72	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/Core/Src/main.c:276:6:Error_Handler	4	static,ignoring_inline_asm

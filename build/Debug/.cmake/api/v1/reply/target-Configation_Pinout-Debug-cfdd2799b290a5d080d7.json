@@ -43,7 +43,7 @@
 			{
 				"command" : 1,
 				"file" : 0,
-				"line" : 67,
+				"line" : 68,
 				"parent" : 0
 			},
 			{
@@ -113,6 +113,10 @@
 					"path" : "C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Inc"
 				},
 				{
+					"backtrace" : 5,
+					"path" : "C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Inc"
+				},
+				{
 					"backtrace" : 3,
 					"path" : "C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/cmake/stm32cubemx/../../Core/Inc"
 				},
@@ -155,7 +159,8 @@
 				8,
 				9,
 				11,
-				12
+				12,
+				13
 			]
 		},
 		{
@@ -185,6 +190,10 @@
 				{
 					"backtrace" : 5,
 					"path" : "C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/FOC_App/Inc"
+				},
+				{
+					"backtrace" : 5,
+					"path" : "C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Inc"
 				},
 				{
 					"backtrace" : 3,
@@ -281,7 +290,8 @@
 				8,
 				9,
 				11,
-				12
+				12,
+				13
 			]
 		},
 		{
@@ -295,7 +305,6 @@
 			"name" : "Object Libraries",
 			"sourceIndexes" : 
 			[
-				13,
 				14,
 				15,
 				16,
@@ -316,7 +325,8 @@
 				31,
 				32,
 				33,
-				34
+				34,
+				35
 			]
 		}
 	],
@@ -398,6 +408,12 @@
 			"backtrace" : 7,
 			"compileGroupIndex" : 0,
 			"path" : "FOC_App/Src/foc_math.c",
+			"sourceGroupIndex" : 0
+		},
+		{
+			"backtrace" : 7,
+			"compileGroupIndex" : 0,
+			"path" : "PID/Src/foc_pid.c",
 			"sourceGroupIndex" : 0
 		},
 		{

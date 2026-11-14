@@ -7,7 +7,7 @@
 #define FOC_TS (1.0F / (float)FOC_PWM_FREQ_HZ)
 #define SPEED_TS (FOC_TS * 10.0f) // Thời gian lấy mẫu tốc độ động cơ (10 lần so với FOC_TS)
 #define PWM_PERIOD_CYCLES 850U
-#define PWM_HALF_PERIOD_CYCLES (PWM_PERIOD_CYCLES >> 1)
+#define PWM_HALF_PERIOD (PWM_PERIOD_CYCLES >> 1)
 
 #define USE_24V_SAFE_TEST_MODE  1    // 1: Bàn test 24V | 0: Thực chiến 60V (14S)
 #if (USE_24V_SAFE_TEST_MODE == 1)

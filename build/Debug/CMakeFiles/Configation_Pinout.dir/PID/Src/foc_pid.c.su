@@ -1,0 +1,8 @@
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:9:6:FOC_PI_Init	32	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:39:6:FOC_PI_SetGains	24	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:63:6:FOC_PI_TuneCurrent	32	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:81:6:FOC_PI_SetOutputLimits	24	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:99:6:FOC_PI_Reset	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:106:6:FOC_PI_ClearFault	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:113:6:FOC_PI_PreloadIntegral	16	static
+C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/PID/Src/foc_pid.c:135:6:FOC_PI_PreloadBumpless	48	static
