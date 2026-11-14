@@ -26,7 +26,6 @@ void FOC_PI_Init(FOC_PI_t *pi, float kp, float ki, float ts, float out_min, floa
         pi->out_max     =  1.0f;
         return;
     }
-
     pi->kp      = kp;
     pi->ki      = ki;
     pi->ts      = ts;
@@ -34,18 +33,15 @@ void FOC_PI_Init(FOC_PI_t *pi, float kp, float ki, float ts, float out_min, floa
     pi->out_min = out_min;
     pi->out_max = out_max;
 }
-
 //Cập nhật hệ số Kp, Ki trực tuyến.
 //Biến integral lưu theo đơn vị đầu ra (đã nhân Ki) nên đổi Ki không làm đầu ra nhảy.
 //Đặt Ki = 0 sẽ xóa tích phân.
- 
 void FOC_PI_SetGains(FOC_PI_t *pi, float kp, float ki)
 {
     if (!isfinite(kp) || !isfinite(ki) || kp < 0.0f || ki < 0.0f) {
         pi->input_fault = true;
         return;
     }
-
     pi->kp    = kp;
     pi->ki    = ki;
     pi->ki_ts = ki * pi->ts;
@@ -120,7 +116,6 @@ void FOC_PI_PreloadIntegral(FOC_PI_t *pi, float preload_val)
         pi->input_fault = true;
         return;
     }
-
     if (preload_val > pi->out_max) {
         pi->integral = pi->out_max;
     } else if (preload_val < pi->out_min) {
@@ -130,7 +125,6 @@ void FOC_PI_PreloadIntegral(FOC_PI_t *pi, float preload_val)
     }
     pi->out_val = pi->integral;
 }
-
 /* Nạp tích phân để chuyển mạch êm (bumpless transfer), ví dụ khi chuyển I/F -> SMO:
  * I = u_prev - (Kp + Ki*Ts) * err_now - ff_now
  * Khi đó lần gọi FOC_PI_UpdateFF(pi, ref_now, meas_now, ff_now) kế tiếp cho đầu ra đúng bằng u_prev.
@@ -144,13 +138,48 @@ void FOC_PI_PreloadBumpless(FOC_PI_t *pi, float u_prev, float ref_now, float mea
         pi->input_fault = true;
         return;
     }
-
     float err_now    = ref_now - meas_now;
     float i_bumpless = u_prev - ((pi->kp + pi->ki_ts) * err_now) - ff_now;
     bool  in_range   = (i_bumpless <= pi->out_max) && (i_bumpless >= pi->out_min);
-
     FOC_PI_PreloadIntegral(pi, i_bumpless);
     if (in_range) {
         pi->out_val = u_prev;
     }
 }
+/*
+Tên	                Viết tắt của	        Ý nghĩa	Đơn vị (vòng dòng)
+kp    	            proportional	        Hệ số tỷ lệ: đầu ra tỷ lệ thẳng với sai số	V/A
+ki	                integral	            Hệ số tích phân: sai số tồn tại lâu thì đầu ra tăng dần	V/(A·s)
+ts	                time sample	            Chu kỳ lấy mẫu (10 µs ở 100 kHz)	s
+ki_ts	            ki × ts                 Tính sẵn một lần để khỏi nhân mỗi chu kỳ	V/A
+integral	        tích phân	            Bộ nhớ của PI: tổng sai số đã cộng dồn, đã nhân sẵn ki·ts, nên mang đơn vị của đầu ra (V)	V
+out_min, out_max	output min, max        	Giới hạn dưới và trên của đầu ra (bão hòa)	V
+out_val	            output value	        Đầu ra của lần tính gần nhất (để đọc ra ngoài)	V
+is_saturated	“có đang bão hòa không”	    true khi đầu ra đang chạm out_min hoặc out_max	cờ
+input_fault	        lỗi đầu vào            	true khi tham số hoặc ref/meas/ff không hợp lệ (NaN, inf)	cờ
+*/
+/*
+Tên                	Nghĩa	                                        Công thức / mô tả
+    ref	        reference, giá trị đặt (mong muốn)	                    ví dụ iq_ref = 10 A
+meas	        measured, giá trị đo được	                            ví dụ iq đo = 8 A
+err	            error, sai số	                                        err = ref − meas
+ff	            feed-forward, số hạng cộng thẳng vào đầu ra	            khử ghép, EMF; không phụ thuộc err
+p_term	        proportional term, thành phần tỷ lệ	                    kp·err + ff (ở đây gộp luôn ff vào)
+i_cand	        integral candidate, ứng viên tích phân mới	            integral + ki_ts·err; mới là “đề xuất”, chưa chắc được nhận
+u_unsat	        u = tín hiệu điều khiển, unsaturated = chưa bão hòa    	p_term + i_cand: đầu ra nếu không có giới hạn
+clamp_high    	kẹp trên	                                            true nếu u_unsat > out_max và err > 0
+clamp_low	    kẹp dưới	                                            true nếu u_unsat < out_min và err < 0
+u_out	        u output	                                            đầu ra cuối cùng sau khi kẹp trong [out_min, out_max]
+*/
+/*        
+Tên            	                        Nghĩa	                                    Ghi chú
+rs_ohm	                        Resistance stator, điện trở một pha stator	        Ω
+ls_henry	                    inductance stator, điện cảm một pha	                H (ví dụ 30e-6)
+wc_rad_s	                    ω_c, tần số cắt (băng thông mong muốn)	            rad/s; wc = 2π·fc
+preload_val	                    giá trị muốn nạp trước vào integral                	V
+u_prev	                        u previous, đầu ra của khâu trước đó (I/F)	        V
+ref_now, meas_now, ff_now	    giá trị ref, meas, ff ngay lúc chuyển	            để tính i_bumpless
+err_now                        	ref_now − meas_now	                                A
+i_bumpless	                    giá trị tích phân cần nạp để đầu ra không nhảy	    u_prev − (kp + ki_ts)·err_now − ff_now
+in_range	                    giá trị trên có nằm trong [out_min, out_max] không	cờ cục bộ
+*/
