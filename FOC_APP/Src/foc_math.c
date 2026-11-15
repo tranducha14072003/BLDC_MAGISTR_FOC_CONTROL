@@ -1,5 +1,6 @@
 #include "foc_math.h"
-#include "math.h"
+#include <math.h>
+
 //Cấp phát bộ nhớ Ram cho bảng tra cứu lượng giác
 #ifndef PC_UNIT_TEST
 #include "stm32g4xx.h" //truy cập trực tiếp thanh ghi CORDIC
@@ -142,7 +143,7 @@ void inverse_park_transform(float v_d, float v_q, float sin_theta,float cos_thet
     *v_beta = v_d * sin_theta + v_q * cos_theta;
 }
 //Hàm biến đổi trực tiếp từ ba pha Va, Vb, Vc sang Vd-Vq
-void Vabc_to_Vdq(float v_a, float v_b, float v_c, float sin_theta,float cos_theta, float *v_d, float *v_q)
+void Vabc_to_Vdq(float v_a, float v_b, float sin_theta,float cos_theta, float *v_d, float *v_q)
 {
     // Clarke transform
     float v_alpha = v_a;

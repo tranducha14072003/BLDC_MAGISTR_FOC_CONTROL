@@ -9,7 +9,7 @@
 #define PWM_PERIOD_CYCLES 850U
 #define PWM_HALF_PERIOD (PWM_PERIOD_CYCLES >> 1)
 
-#define USE_24V_SAFE_TEST_MODE  1    // 1: Bàn test 24V | 0: Thực chiến 60V (14S)
+#define USE_24V_SAFE_TEST_MODE  1   // 1: Bàn test 24V | 0: Thực chiến 60V (14S)
 #if (USE_24V_SAFE_TEST_MODE == 1)
     #define FOC_MAX_CURRENT_A   40.0f  // Cắt quá dòng OCP ở 40A khi test bàn lab
     #define FOC_MAX_VBUS_V      30.0f   // Cắt quá áp OVP ở 30V

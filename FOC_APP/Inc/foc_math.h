@@ -80,7 +80,7 @@ void clarke_park_transform(float i_a, float i_b, float sin_theta,float cos_theta
 void inverse_clarke_transform(float v_alpha, float v_beta, float *v_a, float *v_b,float *v_c);
 void inverse_park_transform(float v_d, float v_q, float sin_theta,float cos_theta, float *v_alpha, float *v_beta);
 //Phép biến đổi trực tiếp ba pha Va, Vb, Vc sang Vd-Vq
-void Vabc_to_Vdq(float v_a, float v_b, float v_c, float sin_theta,float cos_theta, float *V_d, float *V_q);
+void Vabc_to_Vdq(float v_a, float v_b, float sin_theta,float cos_theta, float *V_d, float *V_q);
 //Khối điều chế SVPWM
 void svpwm(float v_alpha, float v_beta, float v_dc, float inv_vdc, uint32_t pwm_period, uint32_t *pwm_u, uint32_t *pwm_v, uint32_t *pwm_w);
 
