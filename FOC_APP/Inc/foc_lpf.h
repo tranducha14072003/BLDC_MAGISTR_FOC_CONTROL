@@ -34,7 +34,7 @@ typedef struct{
 //1.Khởi tạo bộ lọc bằng tần số cắt(hz),chu kì lấy mẫu Ts, và giá trị khởi đầu init_val x[k]
 void FOC_LPF_Init(FOC_LPF_t *lpf, float fc_hz, float ts,float init_val);
 //2.giống hàm trên nhưng tần số là bằng rad/s, tiện làm với tốc độ góc we của PLL
-void FOC_LPF_IniByWc(FOC_LPF_t *lpf, float wc_rad_s, float ts, float init_val);
+void FOC_LPF_InitByWc(FOC_LPF_t *lpf, float wc_rad_s, float ts, float init_val);
 //3.Dùng để thay đổi động tần số cắt wc ngay trong lúc motor vận hành và thay đổi tốc độ
 void FOC_LPF_SetCutoffHz(FOC_LPF_t *lpf, float fc_hz);
 void FOC_LPF_SetCutoffWc(FOC_LPF_t *lpf, float wc_rad_s);
@@ -42,7 +42,10 @@ void FOC_LPF_SetCutoffWc(FOC_LPF_t *lpf, float wc_rad_s);
 void FOC_LPF_Reset(FOC_LPF_t *lpf, float init_val);
 //Xóa hết cờ ngát cũ sau khi dã xử lí xong sự cố
 void FOC_LPF_ClearFault(FOC_LPF_t *lpf);
-
+static inline bool FOC_LPF_WcTsValid(float wc_ts)
+{
+    return (wc_ts >= FOC_LPF_WCTS_MIN) && (wc_ts <= FOC_LPF_WCTS_MAX);   // NaN -> false
+}
 static inline float FOC_LPF_Update(FOC_LPF_t *lpf, float input)
 {
     if (!lpf->is_initialized || !isfinite(input)) {
@@ -123,6 +126,7 @@ static inline float FOC_LPF_GetAmplitudeGainExact(const FOC_LPF_t *lpf, float we
     (void)s;
     float beta = 1.0f - lpf->alpha;
     return lpf->alpha / fast_sqrt(1.0f - (2.0f * beta * c) + (beta * beta));
+}
 #ifdef __cplusplus
 }
 #endif

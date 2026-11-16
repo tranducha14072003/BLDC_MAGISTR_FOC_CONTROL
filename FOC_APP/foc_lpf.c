@@ -1,10 +1,6 @@
 
-
- 
  //Thực thi các hàm khởi tạo, cài đặt tần số cắt và quản lý trạng thái
- // cho bộ lọc thông thấp bậc 1 (FOC_LPF_t).
-
-
+ // cho bộ lọc thông thấp bậc 1 (FOC_LPF_t)
 #include "foc_lpf.h"
 // Hàm nội bộ đặt lại toàn bộ struct về trạng thái lỗi an toàn (Fail-Safe)
 static void lpf_invalidate(FOC_LPF_t *lpf)
