@@ -48,6 +48,7 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_App/Src/foc_sensing.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_App/Src/foc_math.c
     ${CMAKE_CURRENT_SOURCE_DIR}/PID/Src/foc_pid.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/FOC_APP/Src/foc_lpf.c
 )
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
