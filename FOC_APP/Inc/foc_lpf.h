@@ -28,6 +28,7 @@ typedef struct{
 
     bool is_initialized;//Cờ báo đã nạp mẫu đầu tiên
     bool input_fault;   //Cờ báo lỗi có tham số không hợp lệ NaN/Inf
+    
 } FOC_LPF_t;
 
 //Nguyên mẫu các hàm khởi tạo và cấu hình
