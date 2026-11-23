@@ -1,6 +1,9 @@
 #ifndef FOC_MATH_H
 #define FOC_MATH_H
 #include <stdint.h>
+#ifdef __cplusplus
+extern "C" {
+#endif
 //Các hằng số toán học và lượng giác
 #define PI 3.14159265358979323846f
 #define SQRT3 1.73205080756887729353f
@@ -83,5 +86,7 @@ void inverse_park_transform(float v_d, float v_q, float sin_theta,float cos_thet
 void Vabc_to_Vdq(float v_a, float v_b, float sin_theta,float cos_theta, float *V_d, float *V_q);
 //Khối điều chế SVPWM
 void svpwm(float v_alpha, float v_beta, float v_dc, float inv_vdc, uint32_t pwm_period, uint32_t *pwm_u, uint32_t *pwm_v, uint32_t *pwm_w);
-
+#ifdef __cplusplus
+}
+#endif
 #endif // FOC_MATH_H    

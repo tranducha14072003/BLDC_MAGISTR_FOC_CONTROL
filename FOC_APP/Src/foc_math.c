@@ -32,13 +32,20 @@ void init_trig_lut(void) {
 //Chuẩn hóa góc quay về khoảng 0->2PI tránh tràn
 void normalize_angle(float *theta)
 {
-    if(!(fabsf(*theta) < 1000.0f)) {*theta = 0.0f;} return; // Nếu theta = 0.0f thì không cần chuẩn hóa
+    if(!(fabsf(*theta) < 1000.0f)) 
+    {
+     *theta = 0.0f;   // Nếu theta = 0.0f thì không cần chuẩn hóa
+     return;
+    }  
     while (*theta < 0.0f){ *theta += TWO_PI;}
     while (*theta >= TWO_PI){ *theta -= TWO_PI;}
 }
 void fast_sincos(float theta, float *sin_theta, float *cos_theta) {
     #ifndef PC_UNIT_TEST
     // Chuẩn hóa góc về khoảng -PI->PI
+    if(!(fabsf(theta) < 1000.0f)){
+        theta = 0.0f;
+    }
     while (theta > PI)   theta -= TWO_PI;
     while (theta < -PI)  theta += TWO_PI;
     // Chuyển đổi góc sang định dạng Q1.31
@@ -90,7 +97,7 @@ float fast_atan2(float y, float x)
         return 0.0f;
     }
     // 2. Chuẩn hóa Vector (x, y) về dải Q1.31 [-1, 1) để đạt độ chính xác bit cao nhất
-    float inv_max = 2147483647.0f / max_val;
+    float inv_max = 2147483520.0f / max_val;
     int32_t q31_x = (int32_t)(x * inv_max);
     int32_t q31_y = (int32_t)(y * inv_max);
     // 3. Chuyển CORDIC sang chế độ PHASE (FUNC = 2, NARGS = 1, NRES = 0: Chỉ lấy 1 kết quả Góc)

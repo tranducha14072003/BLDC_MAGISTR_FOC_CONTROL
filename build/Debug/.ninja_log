@@ -32,9 +32,9 @@
 83	881	8157948190416618	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_tim.c.obj	2bc469df878490e1
 578	1094	8157948195366811	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_uart.c.obj	1ae8708631ac5ff5
 513	1107	8164812888072153	Configation_Pinout.elf	4f538f6985e9aeb0
-5	152	8168714667659635	build.ninja	edd906d2bd9b885e
-5	152	8168714667517893	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake_install.cmake	edd906d2bd9b885e
-5	152	8168714667587675	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake/stm32cubemx/cmake_install.cmake	edd906d2bd9b885e
+5	152	8170838783146022	build.ninja	edd906d2bd9b885e
+5	152	8170838783007556	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake_install.cmake	edd906d2bd9b885e
+5	152	8170838783075477	C:/Users/tranh/Documents/Magistr/De_Tai_STC/CODE/ESC_GaN_fet_BLDC_FOC/build/Debug/cmake/stm32cubemx/cmake_install.cmake	edd906d2bd9b885e
 21	616	8164013101420850	CMakeFiles/Configation_Pinout.dir/Core/Src/cordic.c.obj	965332ad6ecc1e92
 17	513	8164812883112734	CMakeFiles/Configation_Pinout.dir/FOC_App/Src/foc_math.c.obj	5e47add9e9fc5b67
 76	733	8157948190356458	cmake/stm32cubemx/CMakeFiles/STM32_Drivers.dir/__/__/Drivers/STM32G4xx_HAL_Driver/Src/stm32g4xx_hal_cordic.c.obj	be02efb3a70ca3d9

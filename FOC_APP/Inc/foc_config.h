@@ -18,8 +18,8 @@
 #else
     #define FOC_MAX_CURRENT_A   320.0f   // Cắt quá dòng OCP thực chiến: 320A
     #define FOC_MAX_VBUS_V      65.0f    
-    #define FOC_MIN_VBUS_V      38.0f    //Cắt quá áp OVP pin 14S: 65V
-    #define VBUS_NOMINAL_VOLT 50.0f    // Ngắt thấp áp UVLO pin 14S: 38V
+    #define FOC_MIN_VBUS_V      38.0f    //Cắt thấp áp OVP pin 14S: 
+    #define VBUS_NOMINAL_VOLT 50.0f    // Ngắt quá áp UVLO pin 14S: 
 #endif /* FOC_INC_FOC_CONFIG_H_ */
 #endif
 

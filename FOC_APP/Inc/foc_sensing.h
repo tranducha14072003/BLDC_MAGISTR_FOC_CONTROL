@@ -24,7 +24,6 @@
 #define VBUS_DIVIDER_RATIO          20.09f    
 #define ADC_TO_VBUS_FACTOR       ((ADC_VREF_VOLT / ADC_RESOLUTION_MAX) * VBUS_DIVIDER_RATIO) 
 #define VBUS_LPF_ALPHA              0.01f            // Hệ số lọc LPF cho Vbus (0.01 ~ 1ms)
-#define VBUS_NOMINAL_VOLT           24.0f            // Điện áp định mức của nguồn DC bus
 #define OVP_DEBOUNCE_SAMPLES 2U
 
  //Cấu trúc dữ liệu cảm biến dòng và cờ bảo vệ

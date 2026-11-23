@@ -1,5 +1,5 @@
-#ifndef foc_pid_h
-#define foc_pid_h
+#ifndef FOC_PID_H
+#define FOC_PID_H
 
 #include <stdint.h>
 #include <stdbool.h>

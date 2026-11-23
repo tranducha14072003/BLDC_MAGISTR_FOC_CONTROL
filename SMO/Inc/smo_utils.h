@@ -1,5 +1,5 @@
-#ifndef smo_utils_h_
-#define smo_utils_h_
+#ifndef SMO_UTILS_H
+#define SMO_UTILS_H
 
 #include <stdint.h>
 #include <stdbool.h>
@@ -34,17 +34,17 @@ typedef struct{
     FOC_LPF_t lpf_ea;
     FOC_LPF_t lpf_eb;
     //Tín hiệu emf thô thu được sau lọc từ z
-    float e_alpha;
+    float e_alpha; // emf đã lọc nhưng chưa bù trễ
     float e_beta;
     //Hệ số tuyến tính ls/ts
     float c_lin;
-    float ke;
-    float wc_min;
+    float ke;       //Hệ số tỉ lệ wc=ke.|we|
+    float wc_min;   //wc nhỏ nhất: mức sàn cho động cơ khi tốc độ = 0
     //Cờ báo an toàn kiểm tra giá trị hợp lệ;
     bool input_fault;
     bool is_initialized;
     //
-    FOC_PI_t pi_pll;
+    FOC_PI_t pi_pll;          // Bộ PI của vòng khóa pha PLL
     float    wn;              // Băng thông góc tự nhiên (rad/s), vd: 2000
     float    zeta;            // Hệ số tắt dần, vd: 0.7
     float    eps_e;           // Hằng số chống chia 0 (V), vd: 0.1
@@ -53,7 +53,7 @@ typedef struct{
     float    theta_meas;      // Góc tại mốc đo t_k (lưu trước khi tích phân)
     float    we_pll;          // Tốc độ góc điện đầu ra PI (rad/s)
     float    pll_err;         // Sai số pha eps từ Phase Detector (lưu để quan sát)
-    bool     pll_initialized;
+    bool     pll_initialized; //Cờ cấu hình hợp lệ của PLL
 }FOC_SMO_t;
 //Khởi tạo thông số ban đầu
 void FOC_SMO_Init(FOC_SMO_t *smo, float rs, float ls, float ts);
@@ -66,7 +66,7 @@ FOC_NODISCARD bool FOC_SMO_GetTheta(const FOC_SMO_t *smo, float we, float *theta
 //Hàm xóa cờ lỗi reset để không phải gọi lại hàm Init
 void FOC_SMO_ClearFault(FOC_SMO_t *smo);
 //Bộ tách pha vuông góc QPLL chuẩn hóa biên độ
-static inline float pll_phase_detector(float ea, float eb, float sin_t, float cos_t, float eps_e)
+static inline float FOC_PLL_PhaseDetector(float ea, float eb, float sin_t, float cos_t, float eps_e)
 {
     float mag = fast_sqrt(ea*ea + eb*eb);
     return (-ea*cos_t - eb*sin_t) / (mag + eps_e);
@@ -77,6 +77,7 @@ void FOC_SMO_PLL_Init(FOC_SMO_t *smo, float wn, float zeta, float eps_e, float w
 void FOC_SMO_PLL_Update(FOC_SMO_t *smo, float ea, float eb);
 /* nạp trạng thái PLL: theta0 = góc của ê thô, we0 = tốc độ đã biết */
 void FOC_SMO_PLL_Reset(FOC_SMO_t *smo, float theta0, float we0);
+
 
 #ifdef __cplusplus
 }

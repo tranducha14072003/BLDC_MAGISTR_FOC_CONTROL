@@ -134,7 +134,7 @@ void FOC_SMO_ClearFault(FOC_SMO_t *smo){
 }
 // Chuẩn hóa góc về [0, 2*pi) với O(1) không dùng while vô hạn trong ISR
 // (An toàn vì we_pll đã bị kẹp trong [-we_max, +we_max] và we_max * ts < 2*pi)
-static inline float pll_wrap_2pi(float angle)
+static inline float FOC_SMO_WrapAngle(float angle)
 {
     if (angle >= TWO_PI) {
         angle -= TWO_PI;
@@ -192,7 +192,7 @@ void FOC_SMO_PLL_Update(FOC_SMO_t *smo, float ea, float eb)
     // 2. Tách pha chuẩn hóa bằng sin/cos của góc hiện tại
     float s, c;
     fast_sincos(smo->theta_meas, &s, &c);
-    float eps    = pll_phase_detector(ea, eb, s, c, smo->eps_e);
+    float eps    = FOC_PLL_PhaseDetector(ea, eb, s, c, smo->eps_e);
     smo->pll_err = eps;
     // 3. Bộ PI giữ sai số pha về 0 -> đầu ra là tốc độ góc điện we_pll
     smo->we_pll = FOC_PI_Update(&smo->pi_pll, eps, 0.0f);
@@ -201,7 +201,7 @@ void FOC_SMO_PLL_Update(FOC_SMO_t *smo, float ea, float eb)
         return;
     }
     // 4. Tích phân sang mốc t_{k+1} và chuẩn hóa về [0, 2*pi)
-    smo->theta_pll = pll_wrap_2pi(smo->theta_meas + (smo->we_pll * smo->ts));
+    smo->theta_pll = FOC_SMO_WrapAngle(smo->theta_meas + (smo->we_pll * smo->ts));
 }
 /* nạp trạng thái PLL: theta0 = góc của ê thô, we0 = tốc độ đã biết */
 void FOC_SMO_PLL_Reset(FOC_SMO_t *smo, float theta0, float we0)
@@ -213,7 +213,7 @@ void FOC_SMO_PLL_Reset(FOC_SMO_t *smo, float theta0, float we0)
         smo->input_fault = true;
         return;
     }
-    float th = pll_wrap_2pi(fmodf(theta0, TWO_PI));    /* tính trước, không đổi trạng thái */
+    float th = FOC_SMO_WrapAngle(fmodf(theta0, TWO_PI));    /* tính trước, không đổi trạng thái */
 
     FOC_PI_PreloadIntegral(&smo->pi_pll, we0);          /* đổi trạng thái sau cùng */
     if (smo->pi_pll.input_fault) {
