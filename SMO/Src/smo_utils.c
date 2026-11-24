@@ -146,6 +146,8 @@ static inline float FOC_SMO_WrapAngle(float angle)
     }
     return angle;
 }
+
+//Hàm khởi tạo giá trị ban đầu cho vòng khóa pha 
 void FOC_SMO_PLL_Init(FOC_SMO_t *smo, float wn, float zeta, float eps_e, float we_max)
 {
     if (smo == NULL) {
@@ -166,25 +168,48 @@ void FOC_SMO_PLL_Init(FOC_SMO_t *smo, float wn, float zeta, float eps_e, float w
     smo->eps_e  = eps_e;
     smo->we_max = we_max;
     // Hệ loại 2 chuẩn: s^2 + Kp*s + Ki = 0 -> Kp = 2*zeta*wn, Ki = wn^2
-    float kp = 2.0f * zeta * wn;
-    float ki = wn * wn;
-    FOC_PI_Init(&smo->pi_pll, kp, ki, smo->ts, -we_max, we_max);
+    FOC_PI_Init(&smo->pi_pll,  2.0f * zeta * wn;, wn * wn, smo->ts, -we_max, we_max);
     if (smo->pi_pll.input_fault) {
         smo->input_fault = true;
         return;
     }
+    smo->wn              = wn;
+    smo->zeta            = zeta;
+    smo->eps_e           = eps_e;
+    smp->we_max          = we_max;
+    smo->we_applied      = wn;
+    smo->wn_ratio        = 0.5f; wn < 0,5*wc, LPF nằm trong vào nên vòng không được nhanh hơn nó
+    
     smo->theta_pll       = 0.0f;
     smo->theta_meas      = 0.0f;
     smo->we_pll          = 0.0f;
     smo->pll_err         = 0.0f;
+
+    //Mặc định (sau có mạch thì tinh chỉnh theo mạch thật)
+    smo->pll_dir         = 1.0f;
+    smo->e_mag           = 0.0f;
+    smo->emf_ok          =false;
+    smo->e_min_lock      = 1.0f;    //V:~1300 rad/s với lamda = 8,7e-4 Wb
+    smo->e_min_unlock    = 0.6f;    
+    smo->we_dir_hys      = (800.0f < (0.5f * we_max)) ? 800.0f : (0.5f *we_max); // Nhỏ hơn tốc độ thấp nhất mà có emf_ok
+    smo->dir_count_in    = 200U; //2ms: lật thật mất ~ 4ms, lật nhằm khi kéo vào đồng bộ =0 (Sweep)
+    smo->dir_cnt      = 0U;
+    smo->eps_lock_in  = 0.1f;        // ~5.7 deg
+    smo->eps_lock_out = 0.3f;        // ~17 deg
+    smo->lock_cnt_in  = 50U;         // 0.5 ms @ 100 kHz
+    smo->lock_cnt_out = 50U;
+    smo->lock_cnt     = 0U;
+    smo->pll_locked   = false;
     smo->pll_initialized = true;
 }
+
 void FOC_SMO_PLL_Update(FOC_SMO_t *smo, float ea, float eb)
 {
-    if ((smo == NULL) || !smo->pll_initialized || !isfinite(ea) || !isfinite(eb)) {
-        if (smo != NULL) {
+    if (smo == NULL){
+        return;
+    }
+    if (!smo->pll_initialized || !isfinite(ea) || !isfinite(eb)) {
             smo->input_fault = true;
-        }
         return;
     }
     // 1. Lưu góc tại đúng mốc đo t_k TRƯỚC khi tích phân
@@ -203,6 +228,7 @@ void FOC_SMO_PLL_Update(FOC_SMO_t *smo, float ea, float eb)
     // 4. Tích phân sang mốc t_{k+1} và chuẩn hóa về [0, 2*pi)
     smo->theta_pll = FOC_SMO_WrapAngle(smo->theta_meas + (smo->we_pll * smo->ts));
 }
+
 /* nạp trạng thái PLL: theta0 = góc của ê thô, we0 = tốc độ đã biết */
 void FOC_SMO_PLL_Reset(FOC_SMO_t *smo, float theta0, float we0)
 {
@@ -224,4 +250,28 @@ void FOC_SMO_PLL_Reset(FOC_SMO_t *smo, float theta0, float we0)
     smo->theta_meas = th;
     smo->we_pll     = we0;
     smo->pll_err    = 0.0f;
+    smo->e_mag      = 0.0f;
+    smo->emf_ok     = false;      /* để hysteresis đánh giá lại từ đầu */
+    smo->pll_locked = false;      /* bắt buộc xác nhận khóa lại */
+    smo->lock_cnt   = 0U;
+    smo->dir_cnt    = 0U;
+    if (we0 < 0.0f) {             /* chiều theo dấu we0; we0 = 0 thì giữ chiều cũ (hoặc SetDirection) */
+        smo->pll_dir = -1.0f;
+    } else if (we0 > 0.0f) {
+        smo->pll_dir = 1.0f;
+    }
+}
+
+//
+bool FOC_SMO_PLL_SetEmfThresholds(FOC_SMO_t *smo, float emf_on, float emf_off){
+    if(smo == NULL){
+        return false;
+    }
+    if(!smo->pll_initialized || !isfinite(emf_on) || !isfinite(emf_off) || (emf_off >= 0.0f) || (emf_on > emf_off)){
+        smo->input_fault = true;
+        return false;
+    }
+    smo->e_min_look     = emf_on;
+    smo->e_min_unlook   = emf_off;
+    return true;
 }
