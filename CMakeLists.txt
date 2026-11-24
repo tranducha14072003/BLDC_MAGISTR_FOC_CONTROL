@@ -47,14 +47,17 @@ target_sources(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user sources here
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_App/Src/foc_sensing.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_App/Src/foc_math.c
-    ${CMAKE_CURRENT_SOURCE_DIR}/PID/Src/foc_pid.c
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_APP/Src/foc_lpf.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/PID/Src/foc_pid.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/SMO/Src/smo_utils.c
+    ${CMAKE_CURRENT_SOURCE_DIR}/SMO/Src/foc_pll.c
 )
 # Add include paths
 target_include_directories(${CMAKE_PROJECT_NAME} PRIVATE
     # Add user defined include paths
     ${CMAKE_CURRENT_SOURCE_DIR}/FOC_App/Inc
     ${CMAKE_CURRENT_SOURCE_DIR}/PID/Inc
+    ${CMAKE_CURRENT_SOURCE_DIR}/SMO/Inc
 )
 
 # Add project symbols (macros)
