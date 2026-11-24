@@ -53,7 +53,7 @@ void FOC_SMO_Init(FOC_SMO_t *smo, float rs, float ls, float ts);
 
 void FOC_SMO_SetEmfFilterSpeed(FOC_SMO_t *smo, float we);
 
-void FOC_SMO_Update(FOC_SMO_t *smo,float u_alpha, float u_beta, float i_alpha, float i_beta, float k_slide);
+void FOC_SMO_UpdateCurrentObserver(FOC_SMO_t *smo,float u_alpha, float u_beta, float i_alpha, float i_beta, float k_slide);
 
 void FOC_SMO_ClearFault(FOC_SMO_t *smo);
 

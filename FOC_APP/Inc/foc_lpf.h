@@ -57,7 +57,7 @@ static inline float FOC_LPF_Update(FOC_LPF_t *lpf, float input)
     lpf->out_val += lpf->alpha * (input - lpf->out_val);
     return lpf->out_val;
 }
-//ập nhật hệ số alpha động theo tần số cắt góc wc_rad_s (Adaptive LPF)
+//Cập nhật hệ số alpha động theo tần số cắt góc wc_rad_s (Adaptive LPF)
 static inline void FOC_LPF_UpdateAlphaDynamic(FOC_LPF_t *lpf, float wc_rad_s)
 {
     if (!lpf->is_initialized || !isfinite(wc_rad_s)) {
