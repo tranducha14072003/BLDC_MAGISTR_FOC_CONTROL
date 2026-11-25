@@ -27,7 +27,7 @@ typedef struct {
     // Khối PI & thông số băng thông
     FOC_PI_t pi;
     float    ts;
-    float    wn;             // Băng thông mục tiêu (rad/s)
+    float    wn;             // Băng thông mục tiêu (rad/s) 2000
     float    zeta;           // Hệ số tắt dần (~0.7)
     float    eps_e;          // Hằng số chống chia 0 (V)
     float    we_max;         // Giới hạn tốc độ điện (rad/s)
@@ -45,7 +45,7 @@ typedef struct {
     float    dir;            // +1.0f (thuận) hoặc -1.0f (ngược)
     float    e_min_lock;     // Ngưỡng bật emf_ok (V)
     float    e_min_unlock;   // Ngưỡng tắt emf_ok (V)
-    float    we_dir_hys;     // Ngưỡng tích phân tốc độ để lật chiều (rad/s)
+    float    we_dir_hys;     // Ngưỡng tích phân tốc độ để lật chiều (rad/s) 800rad/s
     uint16_t dir_cnt_in;     // Debounce lật chiều (số mẫu)
     uint16_t dir_cnt;
     float    eps_lock_in;    // Ngưỡng |eps| vào khóa (rad)
@@ -62,10 +62,7 @@ typedef struct {
 } FOC_PLL_t;
 
 // Bộ tách pha vuông góc chuẩn hóa (nhận mag đã tính sẵn để tránh gọi fast_sqrt 2 lần)
-static inline float FOC_PLL_PhaseDetector(float ea, float eb,
-                                          float sin_t, float cos_t,
-                                          float mag, float eps_e)
-{
+static inline float FOC_PLL_PhaseDetector(float ea, float eb, float sin_t, float cos_t, float mag, float eps_e){
     return ((-ea * cos_t) - (eb * sin_t)) / (mag + eps_e);
 }
 

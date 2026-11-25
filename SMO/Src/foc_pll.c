@@ -14,6 +14,8 @@ static inline float pll_wrap_2pi(float angle)
     return angle;
 }
 
+//hạ cờ khóa và xóa sạch bộ đếm debounce (lock_cnt, dir_cnt). Gom vào pll_drop_lock 
+//đảm bảo không bao giờ quên xóa một bộ đếm nào khi chuyển trạng thái hay gặp sự cố.
 static inline void pll_drop_lock(FOC_PLL_t *pll)
 {
     pll->locked   = false;
@@ -21,17 +23,20 @@ static inline void pll_drop_lock(FOC_PLL_t *pll)
     pll->dir_cnt  = 0U;
 }
 
+//Chạy một lần duy nhất lúc khởi động hệ thống
 void FOC_PLL_Init(FOC_PLL_t *pll, float wn, float zeta, float eps_e, float we_max, float ts)
 {
     if (pll == NULL) {
         return;
     }
-
+    //Hạ toàn bộ cờ kiểm tra trước khi kiểm tra
     pll->is_initialized = false;
     pll->input_fault    = false;
     pll->emf_ok         = false;
     pll_drop_lock(pll);
-
+    //Kiểm tra tính hợp lệ và điều kiện ổn định rời rạc ở chu kì Ts
+    //Điều kiện chặn we_max*ts < Pi và wn*ts < 0.5
+    //Nếu băng thông PLL quá gần tần số Nyquist thì phép tích phân Euler rời rạc sẽ mất biên độ pha
     if (!isfinite(wn) || !isfinite(zeta) || !isfinite(eps_e) || !isfinite(we_max) || !isfinite(ts) ||
         !(wn > 0.0f)  || !(zeta > 0.0f)  || !(eps_e > 0.0f)  || !(we_max > 0.0f)  || !(ts > 0.0f) ||
         ((wn * ts) >= 0.5f) || ((we_max * ts) >= PI))
@@ -39,37 +44,37 @@ void FOC_PLL_Init(FOC_PLL_t *pll, float wn, float zeta, float eps_e, float we_ma
         pll->input_fault = true;
         return;
     }
-
+    //Khởi tạo bộ PI con(Kp= 2*zeta*wn, Ki=wn^2) và kiểm ta fault từ PI
     FOC_PI_Init(&pll->pi, 2.0f * zeta * wn, wn * wn, ts, -we_max, we_max);
     if (pll->pi.input_fault) {
         pll->input_fault = true;
         return;
     }
-
+    //Lưu thông số ,xóa trạng thái động và nạp ngưỡng mặc định
     pll->ts           = ts;
     pll->wn           = wn;
     pll->zeta         = zeta;
     pll->eps_e        = eps_e;
     pll->we_max       = we_max;
-    pll->wn_applied   = wn;
-    pll->wn_ratio     = 0.5f;
+    pll->wn_applied   = wn;     //Ghi nhớ băng thông hiện đang nạp cho bộ PI
+    pll->wn_ratio     = 0.5f;   //Tỉ lệ giới hạn tránh PLL chạy nhanh hơn bộ lọc LPF đầu vào
 
-    pll->theta_pll    = 0.0f;
-    pll->theta_meas   = 0.0f;
+    pll->theta_pll    = 0.0f;       //góc tại t[k+1]
+    pll->theta_meas   = 0.0f;       //góc tại t[k]
     pll->we           = 0.0f;
-    pll->err          = 0.0f;
-    pll->e_mag        = 0.0f;
+    pll->err          = 0.0f;       //sai số pha
+    pll->e_mag        = 0.0f;       //biên độ emf
 
-    pll->dir          = 1.0f;
-    pll->e_min_lock   = 1.0f;
-    pll->e_min_unlock = 0.6f;
-    pll->we_dir_hys   = (800.0f < (0.5f * we_max)) ? 800.0f : (0.5f * we_max);
-    pll->dir_cnt_in   = 200U;
+    pll->dir          = 1.0f;       //Chiều mặc định +1
+    pll->e_min_lock   = 1.0f;       //Ngưỡng hysteresis bật cho phép PLL bám theo emf
+    pll->e_min_unlock = 0.6f;       //Ngưỡng hysteresis tắt cho phép PLL bám theo emf
+    pll->we_dir_hys   = (800.0f < (0.5f * we_max)) ? 800.0f : (0.5f * we_max); //Ngưỡng tích phân tốc độ ngược dấu
+    pll->dir_cnt_in   = 200U;           //Thời gian xác nhận 200 mẫu
     pll->eps_lock_in  = 0.1f;
     pll->eps_lock_out = 0.3f;
     pll->lock_cnt_in  = 50U;
     pll->lock_cnt_out = 50U;
-
+    //Sau khi tất cả sẵn sàng và hợp lệ chốt cờ đúng true
     pll->is_initialized = true;
 }
 

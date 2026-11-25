@@ -124,38 +124,49 @@ void FOC_SMO_ClearFault(FOC_SMO_t *smo)
     if (smo == NULL) {
         return;
     }
+    //Xóa đồng bộ cờ lỗi ở lớp vỏ SMO và cả hai bộ lọc LPF
+    //Mục đích là không phải gọi lại hàm Init gây gián đoạn nếu ghi nhận có lỗi đầu vào
     smo->input_fault = false;
     FOC_LPF_ClearFault(&smo->lpf_ea);
     FOC_LPF_ClearFault(&smo->lpf_eb);
 }
 
+//Hàm này không chạy trong vòng điều khiển chính 100kHz mà dùng làm thước đô đối chiếu khi test
+//Hoặc mồi góc ban đầu lúc handover từ open loop sang closed loop
+//Đây là hàm bool nên đầu ra trả về giá trị True or False
+//True = góc trong theta_out đáng tin
+//False = từ chối tính, ta sẽ quyết định giữ góc cũ hay báo lỗi
 bool FOC_SMO_GetTheta(const FOC_SMO_t *smo, float we, float *theta_out)
 {
+    //Kiểm tra con trỏ và xác định tính hợp lệ của đầu vào trạng thái Init
     if ((smo == NULL) || (theta_out == NULL) || !smo->is_initialized || !isfinite(we) || !isfinite(smo->e_alpha) || !isfinite(smo->e_beta)){
         return false;
     }
-
+    //Chặn vector emf bằng (0,0) để tránh góc giả từ atan2(0,0)
     if ((smo->e_alpha == 0.0f) && (smo->e_beta == 0.0f)) {
         return false;
     }
-
+    //Tính vector đơn vị (cos,sin) ứng với góc trễ rời rạc của LPF (theo dấu we)
     float c, s;
     FOC_LPF_GetLagRotation(&smo->lpf_ea, we, &c, &s);
-
+    //Nhân ma trận xoay 2D góc +phi để khử trễ pha LPF
     float ea = (smo->e_alpha * c) - (smo->e_beta * s);
     float eb = (smo->e_alpha * s) + (smo->e_beta * c);
-    float sg = (we >= 0.0f) ? 1.0f : -1.0f;
-
-    *theta_out = fast_atan2(-ea * sg, eb * sg);
+    //Sau khi nhân ma trận xoay ta thu được ea,eb không còn trễ pha do LPF
+    //Chuẩn hóa dấu theo chiều quay và rút ra góc theta bằng atan2, khử dấu âm khi quay ngược 
+    float sg = (we >= 0.0f) ? 1.0f : -1.0f; //dấu chiều quay dùng để đảo ngược dấu vector emf khi we<0
+    *theta_out = fast_atan2(-ea * sg, eb * sg); //rút ra góc theta thật trước khi lọc
     return true;
 }
-
+//Cầu nối báo góc trễ sang file PLL 
 float FOC_SMO_GetTotalLag(const FOC_SMO_t *smo, float we)
 {
     if ((smo == NULL) || !smo->is_initialized || !isfinite(we)) {
         return 0.0f;
     }
+    //Tính hai thành phần trễ pha rời rạc của chuỗi SMO(đều có dấu theo we)
     float lpf_lag = FOC_LPF_GetPhaseLagExact(&smo->lpf_ea, we);
-    float obs_lag = FOC_SMO_OBS_LAG_SAMPLES * we * smo->ts;
+    float obs_lag = FOC_SMO_OBS_LAG_SAMPLES * we * smo->ts; //Trễ nội tại của tín hiệu = we*Ts/2
+    //Trả về tổng góc trễ để ban ngoài truyền vào hàm GetAngles của PLL làm tham oso input_lag_rad
     return lpf_lag + obs_lag;
 }
